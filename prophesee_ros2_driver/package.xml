@@ -1,0 +1,16 @@
+<package format="3">
+  <name>prophesee_ros2_driver</name>
+  <version>0.1.0</version>
+  <description>prophesee_ros2_driver</description>
+  <maintainer email="ky.37f.9850@s.thers.ac.jp">Tanaka Arata</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>prophesee_event_msgs</depend>
+
+</package>
