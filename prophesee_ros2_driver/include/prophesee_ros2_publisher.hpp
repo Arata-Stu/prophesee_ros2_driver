@@ -9,7 +9,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include <sensor_msgs/msg/camera_info.hpp>
-#include <metavision/sdk/stream/camera.h>
+#include <metavision/sdk/driver/camera.h>
 #include <vector>
 #include <string>
 

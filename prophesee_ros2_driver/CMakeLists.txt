@@ -1,19 +1,16 @@
 cmake_minimum_required(VERSION 3.5)
 project(prophesee_ros2_driver)
 
-# C++17を利用
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
-add_compile_options(-O3)
 
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 # OpenCVの設定（必要なコンポーネントがあれば指定）
 find_package(OpenCV REQUIRED)
-# MetavisionSDKのstreamコンポーネントを取得
-find_package(MetavisionSDK COMPONENTS stream REQUIRED)
+find_package(MetavisionSDK COMPONENTS driver REQUIRED)
 
 include_directories(
   include
@@ -26,7 +23,7 @@ ament_auto_add_executable(prophesee_ros2_driver
 )
 
 target_link_libraries(prophesee_ros2_driver
-  MetavisionSDK::stream
+  MetavisionSDK::driver
   ${OpenCV_LIBS}
 )
 
@@ -37,7 +34,7 @@ ament_auto_add_executable(prophesee_ros2_viewer
 )
 
 target_link_libraries(prophesee_ros2_viewer
-  MetavisionSDK::stream
+  MetavisionSDK::driver
   ${OpenCV_LIBS}
 )
 

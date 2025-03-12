@@ -4,7 +4,7 @@
  * Copyright: (c) 2015-2019 Prophesee                              *
  *******************************************************************/
 
- #include "prophesee_ros_viewer.hpp"
+ #include "prophesee_ros2_viewer.hpp"
  #include <opencv2/highgui.hpp>
  #include <chrono>
  #include <thread>

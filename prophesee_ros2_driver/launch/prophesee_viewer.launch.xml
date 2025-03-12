@@ -1,6 +1,6 @@
 <launch>
 
-  <node pkg="prophesee_ros2_driver" type="prophesee_ros2_viewer" name="prophesee_ros2_viewer" output="screen">
+  <node pkg="prophesee_ros2_driver" exec="prophesee_ros2_viewer" name="prophesee_ros2_viewer" output="screen">
     <param name="camera_name" value="camera" />
     <param name="show_cd" value="true" />
 

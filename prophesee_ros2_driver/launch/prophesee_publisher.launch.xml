@@ -5,7 +5,7 @@
   <arg name="raw_file_to_read" default="" />
   <arg name="event_delta_t" default="0.000100" />
 
-  <node pkg="prophesee_ros2_driver" type="prophesee_ros2_publisher" name="prophesee_ros2_publisher" output="screen">
+  <node pkg="prophesee_ros2_driver" exec="prophesee_ros2_driver" name="prophesee_ros2_driver" output="screen">
     <param name="camera_name" value="$(var camera_name)" />
     <param name="publish_cd" value="$(var publish_cd)" />
     <param name="bias_file" value="$(var bias_file)"/>

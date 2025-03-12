@@ -15,8 +15,8 @@
 
 PropheseeWrapperPublisher::PropheseeWrapperPublisher()
     : Node("prophesee_ros2_publisher"),
-      biases_file_(""),
-      raw_file_to_read_("") {
+    event_delta_t_(rclcpp::Duration::from_seconds(0))
+    {
 
     // パラメータの宣言とデフォルト値の設定
     this->declare_parameter<std::string>("camera_name", "PropheseeCamera_optical_frame");
@@ -58,12 +58,12 @@ PropheseeWrapperPublisher::PropheseeWrapperPublisher()
     // センサの設定取得
     Metavision::CameraConfiguration config = camera_.get_camera_configuration();
     auto &geometry = camera_.geometry();
-    RCLCPP_INFO(this->get_logger(), "[CONF] Width:%i, Height:%i", geometry.get_width(), geometry.get_height());
+    RCLCPP_INFO(this->get_logger(), "[CONF] Width:%i, Height:%i", geometry.width(), geometry.height());
     RCLCPP_INFO(this->get_logger(), "[CONF] Serial number: %s", config.serial_number.c_str());
 
     // カメラ情報メッセージの設定
-    cam_info_msg_.width = geometry.get_width();
-    cam_info_msg_.height = geometry.get_height();
+    cam_info_msg_.width = geometry.width();
+    cam_info_msg_.height = geometry.height();
     cam_info_msg_.header.frame_id = camera_name_;
 
     // カメラ情報を定期的にパブリッシュするタイマーを作成（5Hz相当）
@@ -85,7 +85,7 @@ bool PropheseeWrapperPublisher::openCamera() {
             camera_ = Metavision::Camera::from_first_available();
             if (!biases_file_.empty()) {
                 RCLCPP_INFO(this->get_logger(), "[CONF] Loading bias file: %s", biases_file_.c_str());
-                camera_.get_facility<Metavision::I_LL_Biases>().load_from_file(biases_file_);
+                camera_.biases().set_from_file(biases_file_);
             }
         } else {
             camera_ = Metavision::Camera::from_file(raw_file_to_read_);
@@ -146,8 +146,8 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     prophesee_event_msgs::msg::EventArray event_buffer_msg;
                     event_buffer_msg.header.stamp = event_buffer_current_time_;
                     auto &geometry = camera_.geometry();
-                    event_buffer_msg.height = geometry.get_height();
-                    event_buffer_msg.width  = geometry.get_width();
+                    event_buffer_msg.height = geometry.height();
+                    event_buffer_msg.width  = geometry.width();
                     event_buffer_msg.events.resize(event_buffer_.size());
 
                     // バッファ内の各イベントをROS2メッセージ形式に変換
@@ -163,9 +163,9 @@ void PropheseeWrapperPublisher::publishCDEvents() {
                     pub_cd_events_->publish(event_buffer_msg);
                     event_buffer_.clear();
                     RCLCPP_DEBUG(this->get_logger(),
-                                 "CD data available, buffer size: %d at time: %lu",
+                                 "CD data available, buffer size: %d at time: %u",
                                  static_cast<int>(event_buffer_msg.events.size()),
-                                 event_buffer_msg.header.stamp.nanosec());
+                                 event_buffer_msg.header.stamp.nanosec);
                 }
             }
         );

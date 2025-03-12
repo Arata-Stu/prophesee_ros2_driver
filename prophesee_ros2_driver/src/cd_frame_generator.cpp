@@ -103,7 +103,7 @@
  
          std::unique_lock<std::mutex> lock(frame_show_mutex_);
          for (auto it = events_queue_back_.rbegin(), it_end = events_queue_back_.rend();
-              it != itEnd && ros_timestamp_in_us(it->ts) >= threshold_to_display; ++it) {
+              it != it_end && ros_timestamp_in_us(it->ts) >= threshold_to_display; ++it) {
              Metavision::timestamp &p_ts = ts_history_[it->y * width_ + it->x];
              if (p_ts < ros_timestamp_in_us(it->ts)) {
                  p_ts = ros_timestamp_in_us(it->ts);
